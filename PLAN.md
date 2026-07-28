@@ -1,21 +1,25 @@
-# PLAN.md (to be filled in the design session)
+# PLAN.md
 
-This is a skeleton. Do not implement from this file; run a proper design/brainstorming
-session first (see CLAUDE.md), then fill these sections in.
+Design session held 2026-07-28. The approved spec lives at
+`docs/superpowers/specs/2026-07-28-activity-wheel-design.md`; read that first.
 
 ## Goals
 
-- TBD in design session (candidate: shippable fun wheel with filters, portfolio-quality polish).
+- Shippable zero-build static wheel app: spin, land, show activity, with filters,
+  save-for-later (localStorage) and a shareable `?key` URL.
+- Portfolio-quality visual polish on the wheel and result card.
 
-## Open decisions
+## Decided (was "Open decisions")
 
-- Stack: zero-build static vs Next.js (see IDEA.md open questions).
-- Wheel visual style and physics.
-- CORS reality of the Bored API mirror, proxy or static dataset fallback.
-- Website integration path (arcade game vs project entry).
+- Stack: zero-build static (HTML, CSS, vanilla ES modules). No framework.
+- Wheel: classic canvas pie wheel with momentum spin, not the website feature-wheel.
+- CORS: the mirror blocks browser calls, so the dataset ships as committed static JSON
+  (`data/activities.json`), zero runtime network.
+- Website integration: decided later from PatrickRobelWeb via its add-website-project
+  skill; this repo just stays iframe-friendly.
 
 ## Milestones
 
-1. TBD: design session output (spec + implementation plan).
-2. TBD: MVP (spin, land, show activity).
-3. TBD: filters + polish + website showcase entry.
+1. DONE 2026-07-28: design session output (spec).
+2. MVP: dataset script + logic.js (TDD) + wheel + result card.
+3. Filters, saved list, share URL, visual polish.
