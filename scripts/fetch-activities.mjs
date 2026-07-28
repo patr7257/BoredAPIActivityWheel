@@ -22,8 +22,22 @@ const FIELDS = [
   'duration', 'kidFriendly', 'link', 'key',
 ];
 
+// Known upstream text defects: strip stray leading/trailing apostrophes from
+// accessibility values, and fix the "lanaguage" typo seen in some activity
+// strings, so they cannot creep back in on a re-fetch.
+function sanitize(record) {
+  const out = { ...record };
+  if (typeof out.activity === 'string') {
+    out.activity = out.activity.replace(/\blanaguage\b/g, 'language');
+  }
+  if (typeof out.accessibility === 'string') {
+    out.accessibility = out.accessibility.replace(/^'+/, '').replace(/'+$/, '');
+  }
+  return out;
+}
+
 const byKey = new Map(
-  all.map((a) => [a.key, Object.fromEntries(FIELDS.map((f) => [f, a[f]]))]),
+  all.map((a) => [a.key, sanitize(Object.fromEntries(FIELDS.map((f) => [f, a[f]])))]),
 );
 const out = [...byKey.values()];
 if (out.length < 150) throw new Error(`only ${out.length} activities, refusing to write`);

@@ -660,7 +660,7 @@
   "key": "8688620"
  },
  {
-  "activity": "Practice coding in your favorite lanaguage",
+  "activity": "Practice coding in your favorite language",
   "type": "recreational",
   "participants": 1,
   "price": 0,
@@ -1445,7 +1445,7 @@
   "type": "relaxation",
   "participants": 1,
   "price": 0.15,
-  "accessibility": "'Minor challenges",
+  "accessibility": "Minor challenges",
   "duration": "minutes",
   "kidFriendly": true,
   "link": "",
@@ -2149,7 +2149,7 @@
   "type": "music",
   "participants": 1,
   "price": 0,
-  "accessibility": "Few to no challenges'",
+  "accessibility": "Few to no challenges",
   "duration": "minutes",
   "kidFriendly": true,
   "link": "",
