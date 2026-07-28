@@ -1,3 +1,5 @@
+import { segmentAtAngle } from './logic.js';
+
 const COLORS = ['#7c5cff', '#ff7847', '#2dd4bf', '#f43f5e', '#ffb347', '#38bdf8', '#a3e635', '#e879f9'];
 const TAU = Math.PI * 2;
 
@@ -64,5 +66,29 @@ export class Wheel {
 
   truncate(text, max) {
     return text.length > max ? text.slice(0, max - 1).trimEnd() + '…' : text;
+  }
+
+  spin(rng = Math.random) {
+    return new Promise((resolve) => {
+      const turns = 4 + rng() * 2;
+      const offset = rng() * TAU;
+      const start = this.angle;
+      const delta = turns * TAU + offset;
+      const duration = 3800;
+      let t0 = null;
+      const frame = (ts) => {
+        if (t0 === null) t0 = ts;
+        const t = Math.min((ts - t0) / duration, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        this.angle = start + delta * eased;
+        this.draw();
+        if (t < 1) {
+          requestAnimationFrame(frame);
+        } else {
+          resolve(segmentAtAngle(this.angle % TAU, this.labels.length));
+        }
+      };
+      requestAnimationFrame(frame);
+    });
   }
 }
