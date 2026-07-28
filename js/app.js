@@ -111,7 +111,8 @@ const hasStorage = storageAvailable();
 function loadSaved() {
   if (!hasStorage) return [];
   try {
-    return JSON.parse(localStorage.getItem(SAVED_KEY)) || [];
+    const parsed = JSON.parse(localStorage.getItem(SAVED_KEY));
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
     return [];
   }
@@ -152,8 +153,13 @@ el('save').addEventListener('click', () => {
 
 el('share').addEventListener('click', async (e) => {
   const url = `${location.origin}${location.pathname}?key=${resultBox.dataset.key}`;
-  await navigator.clipboard.writeText(url);
-  e.target.textContent = 'Copied!';
+  try {
+    if (!navigator.clipboard) throw new Error('clipboard unavailable');
+    await navigator.clipboard.writeText(url);
+    e.target.textContent = 'Copied!';
+  } catch {
+    e.target.textContent = 'Copy failed';
+  }
   setTimeout(() => { e.target.textContent = 'Copy link'; }, 1500);
 });
 
