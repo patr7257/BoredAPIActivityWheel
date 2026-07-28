@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Activity Wheel</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <main class="app">
+    <h1>Bored? Spin the wheel.</h1>
+
+    <section class="filters" aria-label="Filters">
+      <div class="filter-group" data-filter="participants">
+        <span class="filter-label">People</span>
+        <button data-value="any" class="chip active">Any</button>
+        <button data-value="1" class="chip">Solo</button>
+        <button data-value="2" class="chip">Two</button>
+        <button data-value="4plus" class="chip">4+</button>
+      </div>
+      <div class="filter-group" data-filter="price">
+        <span class="filter-label">Price</span>
+        <button data-value="any" class="chip active">Any</button>
+        <button data-value="free" class="chip">Free</button>
+        <button data-value="cheap" class="chip">Cheap</button>
+      </div>
+      <div class="filter-group" data-filter="types">
+        <span class="filter-label">Type</span>
+        <!-- type chips injected by app.js, multi-select -->
+      </div>
+    </section>
+
+    <section class="wheel-area">
+      <div class="wheel-wrap">
+        <div class="pointer" aria-hidden="true"></div>
+        <canvas id="wheel" width="640" height="640"></canvas>
+      </div>
+      <button id="spin" class="spin-btn">SPIN</button>
+      <p id="empty-msg" class="empty-msg" hidden>No activities match, loosen the filters.</p>
+    </section>
+
+    <section id="result" class="result" hidden>
+      <h2 id="result-text"></h2>
+      <ul id="result-meta" class="meta-chips"></ul>
+      <div class="result-actions">
+        <button id="again" class="chip">Spin again</button>
+        <button id="save" class="chip">Save for later</button>
+        <button id="share" class="chip">Copy link</button>
+      </div>
+    </section>
+
+    <section class="saved" aria-label="Saved activities">
+      <h2>Saved for later</h2>
+      <ul id="saved-list"></ul>
+    </section>
+  </main>
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
