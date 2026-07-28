@@ -9,3 +9,26 @@ export function filterActivities(all, { participants = 'any', price = 'any', typ
     return true;
   });
 }
+
+export function pickCandidates(pool, n = 8, rng = Math.random) {
+  const copy = [...pool];
+  const count = Math.min(n, copy.length);
+  for (let i = 0; i < count; i++) {
+    const j = i + Math.floor(rng() * (copy.length - i));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy.slice(0, count);
+}
+
+export function segmentAtAngle(finalAngle, segmentCount) {
+  const TAU = Math.PI * 2;
+  const seg = TAU / segmentCount;
+  const pointer = -Math.PI / 2;
+  const a = (((pointer - finalAngle) % TAU) + TAU) % TAU;
+  return Math.floor(a / seg);
+}
+
+export function findByKey(all, key) {
+  const found = all.find((a) => String(a.key) === String(key));
+  return found === undefined ? null : found;
+}

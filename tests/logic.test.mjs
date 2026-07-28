@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { filterActivities } from '../js/logic.js';
+import { filterActivities, pickCandidates, segmentAtAngle, findByKey } from '../js/logic.js';
 
 const A = (over = {}) => ({
   activity: 'x', type: 'social', participants: 1, price: 0,
@@ -39,4 +39,37 @@ test('types filters to listed types, empty list means all', () => {
   const all = [A({ type: 'social' }), A({ type: 'diy', key: '2' })];
   assert.deepEqual(filterActivities(all, { types: ['diy'] }).map((a) => a.key), ['2']);
   assert.equal(filterActivities(all, { types: [] }).length, 2);
+});
+
+test('pickCandidates returns n distinct items without mutating pool', () => {
+  const pool = Array.from({ length: 20 }, (_, i) => A({ key: String(i) }));
+  const before = pool.map((a) => a.key).join(',');
+  const out = pickCandidates(pool, 8, () => 0.5);
+  assert.equal(out.length, 8);
+  assert.equal(new Set(out.map((a) => a.key)).size, 8);
+  assert.equal(pool.map((a) => a.key).join(','), before);
+});
+
+test('pickCandidates caps at pool size', () => {
+  const pool = [A(), A({ key: '2' })];
+  assert.equal(pickCandidates(pool, 8, () => 0).length, 2);
+});
+
+test('segmentAtAngle: unrotated wheel, pointer at top hits segment 6 of 8', () => {
+  // seg = PI/4; pointer angle -PI/2 normalizes to 3*PI/2 = 6 * PI/4
+  assert.equal(segmentAtAngle(0, 8), 6);
+});
+
+test('segmentAtAngle: rotating by one segment shifts the winner back by one', () => {
+  const seg = (Math.PI * 2) / 8;
+  assert.equal(segmentAtAngle(seg, 8), 5);
+  assert.equal(segmentAtAngle(-seg, 8), 7);
+  assert.equal(segmentAtAngle(seg * 8, 8), 6);
+});
+
+test('findByKey matches as string and returns null when absent', () => {
+  const all = [A({ key: '8631548' })];
+  assert.equal(findByKey(all, '8631548').key, '8631548');
+  assert.equal(findByKey(all, 8631548).key, '8631548');
+  assert.equal(findByKey(all, 'nope'), null);
 });
