@@ -9,6 +9,16 @@ export class Wheel {
     this.ctx = canvas.getContext('2d');
     this.labels = [];
     this.angle = 0;
+
+    // Capture the logical (CSS) size before resizing the backing store, so
+    // draw()'s math keeps working in the original 640x640 coordinate space.
+    this.logicalWidth = canvas.width;
+    this.logicalHeight = canvas.height;
+    const rawRatio = typeof devicePixelRatio === 'number' ? devicePixelRatio : 1;
+    const dpr = Math.min(rawRatio || 1, 2);
+    canvas.width = this.logicalWidth * dpr;
+    canvas.height = this.logicalHeight * dpr;
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   }
 
   setItems(labels) {
@@ -18,12 +28,12 @@ export class Wheel {
   }
 
   draw() {
-    const { ctx, canvas, labels } = this;
+    const { ctx, labels, logicalWidth, logicalHeight } = this;
     const n = labels.length;
-    const cx = canvas.width / 2;
-    const cy = canvas.height / 2;
+    const cx = logicalWidth / 2;
+    const cy = logicalHeight / 2;
     const r = cx - 8;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.clearRect(0, 0, logicalWidth, logicalHeight);
     if (n === 0) return;
 
     const seg = TAU / n;
