@@ -17,7 +17,14 @@ for (const type of TYPES) {
   all.push(...list);
 }
 
-const byKey = new Map(all.map((a) => [a.key, a]));
+const FIELDS = [
+  'activity', 'type', 'participants', 'price', 'accessibility',
+  'duration', 'kidFriendly', 'link', 'key',
+];
+
+const byKey = new Map(
+  all.map((a) => [a.key, Object.fromEntries(FIELDS.map((f) => [f, a[f]]))]),
+);
 const out = [...byKey.values()];
 if (out.length < 150) throw new Error(`only ${out.length} activities, refusing to write`);
 
