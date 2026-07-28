@@ -1,0 +1,9 @@
+{
+  "name": "bored-api-activity-wheel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/",
+    "fetch-data": "node scripts/fetch-activities.mjs"
+  }
+}
