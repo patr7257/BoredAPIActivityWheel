@@ -37,15 +37,19 @@ export class Wheel {
       ctx.lineWidth = 2;
       ctx.stroke();
 
+      const mid = start + seg / 2;
+      const normalized = ((mid % TAU) + TAU) % TAU;
+      const flipped = normalized > Math.PI / 2 && normalized < (3 * Math.PI) / 2;
+
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(start + seg / 2);
-      ctx.textAlign = 'right';
+      ctx.rotate(flipped ? mid + Math.PI : mid);
+      ctx.textAlign = flipped ? 'left' : 'right';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = '#101010';
       ctx.font = '600 18px system-ui, sans-serif';
       const label = this.truncate(labels[i], 24);
-      ctx.fillText(label, r - 18, 0);
+      ctx.fillText(label, flipped ? -(r - 18) : r - 18, 0);
       ctx.restore();
     }
 
