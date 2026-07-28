@@ -32,26 +32,16 @@ polish and a fun spin animation matter more than feature depth.
 - No key, no auth. CORS status to verify at design time; if CORS blocks the browser,
   either proxy through a tiny serverless route or ship the open dataset as static JSON.
 
-## Related idea: Activity Tinder (#13) with TodoList integration
+## Related idea: Activity Tinder (#13), MOVED
 
-Brainstorm idea #13 (swipe left/right on activities, liked ones saved) is parked here as a
-possible second mode of this same app (wheel mode vs swipe mode) rather than its own repo.
+SUPERSEDED 2026-07-27: the Activity Tinder idea grew into "TodoTinder", a multi-deck
+couple swipe app (activities, vacation places, groceries, date nights) that lives in the
+TodoList repo itself and syncs each deck to a todo list behind the existing login. Full
+spec draft: `patr7257/TodoList` issue #44. It is no longer a planned mode of this app.
 
-Patrick's requested twist (2026-07-27): liked activities should NOT just sit in
-localStorage; they go directly into an "Activities" list in the shared todolist
-(`patr7257/TodoList`, the Java HTTP API behind the /todo web app and phone PWA). Swipe
-right on "go ice skating" and it appears as a todo item the household can see, schedule,
-and check off.
-
-Integration notes for the design session:
-- The TodoList API signs a token on login; this app would need the same login flow (or a
-  dedicated API token) before it can create items. Personal/household use, not anonymous
-  visitors.
-- Check whether the API has a list/category concept for a dedicated "Activities" list; if
-  items are one flat shared list today, that is a small API addition (or use a fixed
-  prefix/tag convention as v1).
-- The wheel's "Save for later" should reuse the exact same "create todo in Activities"
-  call, so both modes feed one list.
+Still relevant here: the wheel's "Save for later" feature could optionally create items
+in the same "Activities" list via the TodoList API instead of localStorage, reusing
+TodoTinder's sync endpoint once it exists. Decide in this app's design session.
 
 ## Open questions for the design session
 
