@@ -94,3 +94,68 @@ if (sharedKey) {
   const shared = findByKey(activities, sharedKey);
   if (shared) showResult(shared);
 }
+
+const SAVED_KEY = 'baw-saved-v1';
+
+function storageAvailable() {
+  try {
+    localStorage.setItem('__baw_test', '1');
+    localStorage.removeItem('__baw_test');
+    return true;
+  } catch {
+    return false;
+  }
+}
+const hasStorage = storageAvailable();
+
+function loadSaved() {
+  if (!hasStorage) return [];
+  try {
+    return JSON.parse(localStorage.getItem(SAVED_KEY)) || [];
+  } catch {
+    return [];
+  }
+}
+
+function renderSaved() {
+  const list = el('saved-list');
+  list.innerHTML = '';
+  for (const a of loadSaved()) {
+    const li = document.createElement('li');
+    const span = document.createElement('span');
+    span.textContent = a.activity;
+    const rm = document.createElement('button');
+    rm.textContent = '✕';
+    rm.setAttribute('aria-label', `Remove ${a.activity}`);
+    rm.addEventListener('click', () => {
+      const next = loadSaved().filter((s) => String(s.key) !== String(a.key));
+      localStorage.setItem(SAVED_KEY, JSON.stringify(next));
+      renderSaved();
+    });
+    li.append(span, rm);
+    list.appendChild(li);
+  }
+  document.querySelector('.saved').hidden = !hasStorage;
+}
+
+el('save').addEventListener('click', () => {
+  const key = resultBox.dataset.key;
+  const activity = findByKey(activities, key);
+  if (!activity || !hasStorage) return;
+  const saved = loadSaved();
+  if (!saved.some((s) => String(s.key) === String(key))) {
+    saved.push(activity);
+    localStorage.setItem(SAVED_KEY, JSON.stringify(saved));
+  }
+  renderSaved();
+});
+
+el('share').addEventListener('click', async (e) => {
+  const url = `${location.origin}${location.pathname}?key=${resultBox.dataset.key}`;
+  await navigator.clipboard.writeText(url);
+  e.target.textContent = 'Copied!';
+  setTimeout(() => { e.target.textContent = 'Copy link'; }, 1500);
+});
+
+if (!hasStorage) el('save').hidden = true;
+renderSaved();
