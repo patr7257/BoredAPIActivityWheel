@@ -5,7 +5,7 @@ exists yet; the stack is deliberately undecided until the design session.
 
 ## Facts
 
-- Repo: `patr7257/BoredAPIActivityWheel` (private for now, flip public when showable).
+- Repo: `patr7257/BoredAPIActivityWheel` (public since 2026-07-27).
 - Local clone lives at `C:\Users\pr\repos\1-Personal\BoredAPIActivityWheel`, sibling to
   `PatrickRobelWeb` (same convention as MusicTimelineQuiz and MiniGames).
 - Showcase relationship: this repo holds the project; a project entry on the portfolio
